@@ -82,7 +82,5 @@ public class TodoControllerTest {
                 .param("status","false"))
                 .andExpect(status().is3xxRedirection())
                 .andExpect(view().name("redirect:/todoitem/1/show"));
-
-
     }
 }
