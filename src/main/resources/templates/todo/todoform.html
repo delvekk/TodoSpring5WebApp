@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Dodaj/Edytuj todo</title>
+
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css"
+          integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB" crossorigin="anonymous">
+
+    <script src="/webjars/jquery/1.11.1/jquery.min.js"></script>
+
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"
+            integrity="sha384-smHYKdLADwkXOn1EmN1qk/HfnUcbVRZyYmZ4qpPea6sjB/pTJ0euyQp0Mk8ck+5T"
+            crossorigin="anonymous"></script>
+
+</head>
+<body class="bg-secondary">
+<div class="col-md-6 offset-md-3 text-white" style="margin-top: 20px">
+    <form th:object="${todoitem}" th:action="@{/todo}" method="post">
+        <div th:if="${#fields.hasErrors('*')}" class="alert alert-danger">
+            <p>Uzupełnij poprawnie formularz</p>
+        </div>
+        <div class="card" style="margin-bottom: 20px">
+            <div class="card-header bg-info">
+                Informacje
+            </div>
+            <div class="card-body bg-dark">
+                <input type="hidden" th:field="*{id}"/>
+                <div class="row">
+                    <div class="form-group col-md-6" th:class="${#fields.hasErrors('title')}
+                        ? 'col-md-6 form-group has-error' : 'col-md-6 form-group'">
+                        <label for="titleInput">Tytuł</label>
+                        <input type="text" class="form-control" th:field="*{title}" th:errorclass="has-error" id="titleInput"
+                               placeholder="Wprowadź tytuł">
+                        <span class="help-block" th:if="${#fields.hasErrors('title')}">
+                            <ul>
+                                <li th:each="err : ${#fields.errors('title')}" th th:text="${err}"/>
+                            </ul>
+                        </span>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group col-md-6">
+                        <label for="titleInput">Priorytet</label>
+                        <select class="form-control" th:field="*{priority}">
+                            <option th:each="priorityVal : ${T(com.dawid.app.domain.PriorityEnum).values()}"
+                                    th:value="${priorityVal.name()}"
+                                    th:text="${priorityVal.name()}"></option>
+                        </select>
+                    </div>
+                    <div class="form-group col-md-3">
+                        <div class="radio">
+                            <label>
+                                <input type="checkbox" th:field="*{status}" value="True"/>
+                                Zakończono
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-header bg-info">
+                Opis
+            </div>
+            <div class="card-body bg-dark">
+                <textarea rows="20" class="col-md-12" th:field="*{longDesc}">
+                </textarea>
+            </div>
+        </div>
+        <button type="submit" class="btn btn-primary">Zatwierdź</button>
+        <a class="btn btn-primary" href="#" th:href="@{/}" role="button">Powrót</a>
+    </form>
+
+</div>
+</body>
+</html>
